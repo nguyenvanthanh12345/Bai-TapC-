@@ -70,7 +70,15 @@ uint16_t Sach::getId()
     return Sach::ID;
 }
 
-
+/*
+* Class:  Sach
+* Function: setTen
+* Description: set ten sach
+* Input:
+*   string ten
+* Output:
+*   return: khong co
+*/
 
 void Sach::setTen(string ten)
 {
@@ -93,6 +101,16 @@ string Sach::getTen()
     return Sach::TEN;
 }
 
+/*
+* Class:  Sach
+* Function: setTacGia
+* Description: set ten tac gia
+* Input:
+*   string tacGia
+* Output:
+*   return: khong co
+*/
+
 void Sach::setTacGia(string tacGia)
 {
     Sach::TAC_GIA = tacGia;
@@ -100,19 +118,29 @@ void Sach::setTacGia(string tacGia)
 
 /*
 * Class:  Sach
-* Function: getTen()
-* Description: lay ten sach
+* Function: getTacGia()
+* Description: lay ten tac gia
 * Input:
 *   khong co
 * Output:
-*   return: ten sach
+*   return: ten tac gia
 */
 
 string Sach::getTacGia()
 {
     return Sach::TAC_GIA;
 }
-    
+
+/*
+* Class:  Sach
+* Function: setNamXuatBan
+* Description: set nam xuat ban sach
+* Input:
+*   uint16_t namXuatBan
+* Output:
+*   return: khong co
+*/
+
 void Sach::setNamXuatBan(uint16_t namXuatBan)
 {
     Sach::NAM_XUAT_BAN = namXuatBan;
@@ -120,18 +148,28 @@ void Sach::setNamXuatBan(uint16_t namXuatBan)
 
 /*
 * Class:  Sach
-* Function: getTen()
-* Description: lay ten sach
+* Function: getNamXuatBan()
+* Description: lay nam xuat ban sach
 * Input:
 *   khong co
 * Output:
-*   return: ten sach
+*   return: nam xuat ban
 */
 
 uint16_t Sach::getNamXuatBan()
 {
     return Sach::NAM_XUAT_BAN;
 }
+
+/*
+* Class:  Sach
+* Function: setSoLuong
+* Description: set so luong sach
+* Input:
+*   uint16_t soLuong
+* Output:
+*   return: khong co
+*/
 
 void Sach::setSoLuong(uint16_t soLuong)
 {

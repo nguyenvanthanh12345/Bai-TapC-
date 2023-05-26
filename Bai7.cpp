@@ -68,10 +68,10 @@ uint8_t Time::getDay()
 
 /*
 * Class: Time
-* Function: setDay
-* Description: thay doi ngay
+* Function: setMonth
+* Description: thay doi thang
 * Input:
-*   uint8_t day
+*   uint8_t month
 * Output:
 *   return: khong co
 */
@@ -83,12 +83,12 @@ void Time::setMonth(uint8_t month)
 
 /*
 * Class: Time
-* Function: getDay()
-* Description: lay ngay
+* Function: getMonth()
+* Description: lay thang
 * Input:
 *   khong co
 * Output:
-*   return: ngay
+*   return: thang
 */
 
 uint8_t Time::getMonth()
@@ -98,10 +98,10 @@ uint8_t Time::getMonth()
 
 /*
 * Class: Time
-* Function: setDay
-* Description: thay doi ngay
+* Function: setYear
+* Description: thay doi nam
 * Input:
-*   uint8_t day
+*   uint16_t year
 * Output:
 *   return: khong co
 */
@@ -113,12 +113,12 @@ void Time::setYear(uint16_t year)
 
 /*
 * Class: Time
-* Function: getDay()
+* Function: getYear()
 * Description: lay ngay
 * Input:
 *   khong co
 * Output:
-*   return: ngay
+*   return: nam
 */
 
 uint16_t Time::getYear()
