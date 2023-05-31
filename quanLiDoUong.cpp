@@ -1,11 +1,17 @@
+/*
+* File: quan li sinh vien.cpp
+* Author: Nguyen Van Thanh
+* Date: 31/05/2023
+* Description:manager drink
+*/
+
 #include<stdio.h>
 #include<string>
 #include<iostream>
 #include<vector>
 using namespace std;
 
-
-
+//this macro use to enter and check the input data
 #define INPUT_TYPE(text, var, check)      \
         do                                                  \
         {                                                    \
@@ -15,17 +21,10 @@ using namespace std;
         }                                                    \
         while(check) 
 
+// no check the input data
 #define NO_CHECK 0
 
-#define INPUT(text, var, check, showError)      \
-        do                                                  \
-        {                                                    \
-            cout << text;\
-            cin>>var;            \
-            if(check) cout<< showError; \
-        }                                                    \
-        while(check) 
-
+// class Beverage
 class Beverage
 {
     private:
@@ -37,9 +36,9 @@ class Beverage
     Beverage(string bverage, uint16_t price);
     Beverage();
     uint16_t getId();
-    void setBeverageName(string beverageName);
+    void setBeverageName(const string beverageName);
     string getBeverageName ();
-    void setprice(int32_t price);
+    void setprice(const int32_t price);
     int32_t getPrice();
 };
 
@@ -54,7 +53,6 @@ Beverage::Beverage(string beverage, uint16_t price)
 
 Beverage::Beverage ()
 {
-
 }
 
 uint16_t Beverage::getId()
@@ -62,20 +60,60 @@ uint16_t Beverage::getId()
     return this->ID;
 }
 
-void Beverage::setBeverageName(string beverage)
+/*
+* Class: beverage
+* Function: setBeverageName
+* Description: This function use to set the beverage name
+* Input:
+*   beverage - an string value
+* Output:
+*   return: None
+*/
+
+void Beverage::setBeverageName(const string beverage)
 {
     this->BEVERAGE_NAME = beverage;
 }
+
+/*
+* Class: beverage
+* Function: getBeverageName
+* Description: This function use to get the beverage name
+* Input:
+*   None
+* Output:
+*   return: the beverage name
+*/
 
 string Beverage::getBeverageName()
 {
     return this->BEVERAGE_NAME;
 }
 
-void Beverage::setprice(int32_t price)
+/*
+* Class: beverage
+* Function: setprice
+* Description: This function use to set the price
+* Input:
+*   price - an integer-32 bit value
+* Output:
+*   return: None
+*/
+
+void Beverage::setprice(const int32_t price)
 {
     this->PRICE = price;
 }
+
+/*
+* Class: beverage
+* Function: setprice
+* Description: This function use to get the price
+* Input:
+*   None
+* Output:
+*   return: the beverage price
+*/
 
 int32_t Beverage::getPrice()
 {
@@ -192,6 +230,7 @@ typedef enum
     EMPTY,
     FULL
 }TableStatus;
+
 class Table
 {
     private:
@@ -199,9 +238,9 @@ class Table
     TableStatus TABLE_STATUS;
     int16_t QUANTITY;
     int32_t PAY;
+    vector <Beverage> DatabaseBeverage;
     public:
     Table();
-    vector <Beverage> DatabaseBeverage;
     uint16_t getNumberTable();
     void setTableStatus(TableStatus status);
     TableStatus getTableStatus();
@@ -281,20 +320,14 @@ void Staff::orderTable()
     {
         if(DatabaseTable[i].getTableStatus() == EMPTY)
         {
-            INPUT("entering id:\n",id, id < 0, "error id drink\n");
+            
         }
     }
     
 }
-//void Staff::Payment()
+
 
 int main()
 {
-    vector<int> a;
-    a.assign(20,5);
-    vector<int> m;
-    m=a;
-    m[3]=6;
-    printf("%d",a[3]);
-
+   
 }
