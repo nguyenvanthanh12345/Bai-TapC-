@@ -11,40 +11,48 @@
 #include<vector>
 using namespace std;
 
-//this macro use to enter and check the input data
-#define INPUT_TYPE(text, var, check)      \
+//this macro use to enter, check the input data and show erroe information
+#define INPUT_TYPE(text, var, check, show_Erorr)      \
         do                                                  \
         {                                                    \
             cout << text;\
             cin>>var;            \
-            if(check) cout << "please enter again \n"; \
+            if(check)  \
+            {                                             \
+                cout << show_Erorr;                    \
+                cout << "please enter again \n";  \
+            }                                             \
         }                                                    \
         while(check) 
 
+#define INPUT_SEARCH_TYPE(text, var)      \
+            cout << text;                \
+            cin>>var;
 // no check the input data
 #define NO_CHECK 0
+#define NO_SHOW "\0"
 
 // class Beverage
 class Beverage
 {
     private:
-    uint16_t ID;
+    int16_t ID;
     string BEVERAGE_NAME;
     int32_t PRICE;
 
     public:
-    Beverage(string bverage, uint16_t price);
+    Beverage(string bverage, int16_t price);
     Beverage();
-    uint16_t getId();
+    int16_t getId();
     void setBeverageName(const string beverageName);
     string getBeverageName ();
     void setprice(const int32_t price);
     int32_t getPrice();
 };
 
-Beverage::Beverage(string beverage, uint16_t price)
+Beverage::Beverage(string beverage, int16_t price)
 {
-    static uint16_t id=0;
+    static int16_t id=1;
     this->ID = id;
     this->BEVERAGE_NAME = beverage;
     this->PRICE = price;
@@ -55,7 +63,7 @@ Beverage::Beverage ()
 {
 }
 
-uint16_t Beverage::getId()
+int16_t Beverage::getId()
 {
     return this->ID;
 }
@@ -120,44 +128,89 @@ int32_t Beverage::getPrice()
     return this->PRICE;
 }
 
-class manager
+class Manager
 {
     private:
     vector <Beverage> DatabaseBeverage;
     void showBeverageAt(Beverage beverage);
-    public:
     void addBeverage();
     void repairBeverage();
     void eraseBeverage();
     void beverageList();
+    public:
+    Manager();
+    vector<Beverage> get_Database_Beverage();
 };
 
-void manager::addBeverage()
+Manager::Manager()
+{
+    int16_t key;
+    cout << "**********manager*********\n";
+    do
+    {
+        do
+        {
+            cout <<"1. them do uong\n";
+            cout <<"2. danh sach do uong\n";
+            cout <<"3. sua do uong\n";
+            cout <<"4. xoa do uong\n";
+            cout <<"0. thoat\n";
+            cout <<"vui long nhap phim\n";
+            cin >> key;
+        }
+        while( key <0 || key > 4);
+        switch(key)
+        {
+            case 1:
+            {
+                this->addBeverage();
+                break;
+            }
+            case 2:
+            {
+                this->beverageList();
+                break;
+            }
+            case 3:
+            {
+                this->repairBeverage();
+                break;
+            }
+            case4:
+            {
+                this->eraseBeverage();
+                break;
+            }
+        }
+    }
+    while(key != 0);
+}
+
+void Manager::addBeverage()
 {
     string beverageName;
     int32_t price;
-    cout << "please enter beverage information \n";
-    INPUT_TYPE("entering beverage: ", beverageName, NO_CHECK);
-    INPUT_TYPE("entering price: ", price, price <= 0);
+    cout << "******add beverage information******* \n";
+    INPUT_TYPE("entering beverage: ", beverageName, NO_CHECK,NO_SHOW);
+    INPUT_TYPE("entering price: ", price, price <= 0, "error price\n");
     Beverage beverage(beverageName, price);
     DatabaseBeverage.push_back(beverage);
 }
 
-void manager::showBeverageAt(Beverage beverage)
+void Manager::showBeverageAt(Beverage beverage)
 {
     cout << beverage.getId() << "\t" << beverage.getBeverageName() << "\t" <<beverage.getPrice()<< "\n";
 }
 
-void manager::repairBeverage()
+void Manager::repairBeverage()
 {
-    uint8_t phim=0;
-    uint16_t id;
+    int16_t key=0;
+    int16_t id;
     uint8_t status = 0;
     string beverageName;
     int32_t price;
-    cout << "repairing beverage information\n";
-    cout <<"please enter id\n";
-    cin >> id;
+    cout << "*********fix beverage information*******\n";
+    INPUT_SEARCH_TYPE("entering id to change beverage information: ",id);
     int i=0;
     for(i=0; i< DatabaseBeverage.size(); i++)
     {
@@ -178,31 +231,32 @@ void manager::repairBeverage()
         cout<< "please chose function\n";
         cout <<"1. exchanging beverage name\n";
         cout <<"2. exchanging price \n";
-        cout <<"3. exit\n";
-        switch(phim)
+        cout <<"0. exit\n";
+        cin >> key;
+        switch(key)
         {
             case 1:
             {
-                INPUT_TYPE("entering beverage name: ", beverageName, NO_CHECK);
+                INPUT_TYPE("entering beverage name: ", beverageName, NO_CHECK, "erorr beverage\n");
                 this->DatabaseBeverage[i].setBeverageName(beverageName);
                 break;
             }
             case 2:
             {
-                INPUT_TYPE("entering price :", price, price <=0);
+                INPUT_TYPE("entering price :", price, price <=0, "erorr beverage\n");
                 this->DatabaseBeverage[i].setprice(price);
                 break;
             }
         }
     }
-    while(phim != 0);
+    while(key != 0);
 }
 
-void manager::eraseBeverage()
+void Manager::eraseBeverage()
 {
-    uint16_t id;
+    int16_t id;
     cout<< "*****erase beverage********\n";
-    INPUT_TYPE("entering id: ", id, NO_CHECK);
+    INPUT_TYPE("entering id: ", id, NO_CHECK,NO_SHOW);
     for(int i=0 ; i< DatabaseBeverage.size(); i++)
     {
         if(DatabaseBeverage[i].getId() == id)
@@ -216,7 +270,7 @@ void manager::eraseBeverage()
     cout << "the id didn't found\n";
 }
 
-void manager::beverageList()
+void Manager::beverageList()
 {
     cout<<"id \t beverage name \t price\n";
     for(Beverage beverage : DatabaseBeverage)
@@ -225,109 +279,160 @@ void manager::beverageList()
     }
 }
 
+vector<Beverage> Manager::get_Database_Beverage()
+{
+    return DatabaseBeverage;
+}
+
 typedef enum
 {
     EMPTY,
     FULL
 }TableStatus;
 
-class Table
+typedef struct
 {
-    private:
-    uint16_t NUMBER_TABLE;
-    TableStatus TABLE_STATUS;
-    int16_t QUANTITY;
-    int32_t PAY;
-    vector <Beverage> DatabaseBeverage;
-    public:
-    Table();
-    uint16_t getNumberTable();
-    void setTableStatus(TableStatus status);
-    TableStatus getTableStatus();
-    void setBeverage(Beverage beverage);
-    Beverage getBeverage();
-    void setQuantity(int16_t quantity);
-    int16_t getQuantity();
-    void setPay(int32_t pay);
-    int32_t getPay();
-};
+    Beverage beverage;
+    int16_t quantity;
+}Order_Beverage;
 
-Table::Table()
+typedef struct
 {
-    this->NUMBER_TABLE = EMPTY;
-}
-
-uint16_t Table::getNumberTable()
-{
-    return this->NUMBER_TABLE;
-}
-
-void Table::setTableStatus(TableStatus status)
-{
-    this->TABLE_STATUS = status;
-}
-
-TableStatus Table::getTableStatus()
-{
-    return this->TABLE_STATUS;
-}
-
-void Table::setQuantity(int16_t quantity)
-{
-    this->QUANTITY= quantity;
-}
-
-int16_t Table::getQuantity()
-{
-    return this->QUANTITY;
-}
-
-void Table::setPay(int32_t pay)
-{
-    this->PAY = pay;
-}
-
-int32_t Table::getPay()
-{
-    return this->PAY;
-}
+    int16_t number_Table;
+    TableStatus table_Status;
+    vector <Order_Beverage> DataBase_Order_Beverage;
+}Table;
 
 class Staff
 {
     private:
-    vector < Table> DatabaseTable;
+    vector <Table> Database_Table;
+    vector <Beverage> Database_Beverage;
+    void order_Beverage ();
+    void fix_Order_beverage();
+    void erase_Beverage();
+    void Pay_Beverage();
+    void list_order();
+    void list_Beverage();
     public:
-    Staff();
-    void orderTable();
-    void Payment();
+    Staff( vector <Beverage> database_beverage, int16_t table_Quantity);
+    
 };
 
-Staff::Staff()
+Staff::Staff( vector <Beverage> database_beverage, int16_t table_Quantity)
 {
-    Table table;
-    this->DatabaseTable.assign(10,table);
+    this->Database_Beverage = database_beverage;
+    for(uint8_t i=1 ; i <= table_Quantity; i++)
+    {
+        Table table;
+        table.number_Table = i;
+        table.table_Status = EMPTY;
+        Database_Table.push_back(table);
+    }
 }
 
-void Staff::orderTable()
+void Staff::order_Beverage ()
 {
-    manager mn;
+    uint8_t status_Table =0;
+    int16_t number_Table;
     int16_t id;
-    int16_t numberTable;
-    cout << "*******order table***********\n";
-    cout<< "plese enter number table: \n";
-    cin >> numberTable;
-    for(int i=0 ; i<DatabaseTable.size(); i++)
+    Table table;
+    int i=0;
+    cout<<" ********order beverage**************\n";
+    INPUT_SEARCH_TYPE("entering number table:", number_Table);
+    for(Table table : Database_Table)
     {
-        if(DatabaseTable[i].getTableStatus() == EMPTY)
+        if(table.number_Table == number_Table)
         {
+            if(table.table_Status == EMPTY)
+            {
+                status_Table = 1;
+                table.table_Status = FULL;
+                break;
+            }
+            else 
+            {
+                cout << "ban da co nguoi ngoi";
+                return;
+            }
+        }
+        i++;
+    }
+    
+    if(status_Table ==1 )
+    {
+        uint8_t key;
+        do
+        {
+            uint8_t key;
+            uint8_t status_Id = 0;
+            int16_t quantity;
+            Order_Beverage order_Beverage;
+            INPUT_SEARCH_TYPE("entering beverage id: ", id);
+            for(Beverage drink : Database_Beverage)
+            {
+                if(drink.getId() == id)
+                {
+                    status_Id == 1;
+                    INPUT_TYPE("entering quantity: ",quantity, quantity < 1, "erorr quantity\n");
+                    order_Beverage.quantity = quantity;
+                    order_Beverage.beverage = drink;
+                    Database_Table[i].DataBase_Order_Beverage.push_back(order_Beverage);
+                    break;
+                }
+            }
+            if(status_Id == 0) cout << " khong tim thay id do uong \n";
+
+            cout << "1. tiep tuc order do uong\n";
+            cout << "0. thoat\n";
+            cout << "vui long nhap phim :";
+            cin >> key;
+        }
+        while(key == 1);
+    }
+    else cout <<"khong tim thay so ban\n";
+}
+
+void Staff::fix_Order_beverage()
+{
+}
+
+void Staff::list_order()
+{
+    int16_t number_table;
+    uint8_t status = 0;
+    INPUT_SEARCH_TYPE("nhap so ban: ",number_table);
+    for(Table table : Database_Table)
+    {
+        if(table.number_Table == number_table)
+        {
+            status = 1;
+            if(table.table_Status == EMPTY)
+            {
+                cout << "ban trong";
+            }
+            else
+            {
+                cout <<"id \t ten \t gia \t so luong\n";
+                for(Order_Beverage order : table.DataBase_Order_Beverage)
+                {
+                    cout << order.beverage.getId()<< "\t" <<order.beverage.getBeverageName()<< "\t" << order.beverage.getPrice()<<"\t" << order.quantity ;
+                }
+            }
+            break;
             
         }
     }
-    
+    if(status == 0) cout << "khong tim thay ban";
 }
-
-
 int main()
 {
-   
+//    Beverage douong1("c2",1000), douong2("c3",574);
+//    vector <Beverage> douong;
+//    douong.push_back(douong1);
+//    douong.push_back(douong2);
+//    Staff staff(douong,10);
+//    staff.order_Beverage();
+//    staff.list_order();
+
 }
