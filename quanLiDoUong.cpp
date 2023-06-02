@@ -308,20 +308,23 @@ class Staff
     private:
     vector <Table> Database_Table;
     vector <Beverage> Database_Beverage;
+    public:
+    Staff( vector <Beverage> database_beverage, int16_t table_Quantity);
     void order_Beverage ();
     void fix_Order_beverage();
     void erase_Beverage();
     void Pay_Beverage();
     void list_order();
     void list_Beverage();
-    public:
-    Staff( vector <Beverage> database_beverage, int16_t table_Quantity);
     
 };
 
 Staff::Staff( vector <Beverage> database_beverage, int16_t table_Quantity)
 {
-    this->Database_Beverage = database_beverage;
+    for(Beverage drink : database_beverage)
+    {
+        this->Database_Beverage.push_back(drink);
+    }
     for(uint8_t i=1 ; i <= table_Quantity; i++)
     {
         Table table;
@@ -336,18 +339,17 @@ void Staff::order_Beverage ()
     uint8_t status_Table =0;
     int16_t number_Table;
     int16_t id;
-    Table table;
-    int i=0;
+    int i;
     cout<<" ********order beverage**************\n";
     INPUT_SEARCH_TYPE("entering number table:", number_Table);
-    for(Table table : Database_Table)
+    for(i=0 ;i<Database_Table.size(); i++)
     {
-        if(table.number_Table == number_Table)
+        if(Database_Table[i].number_Table == number_Table)
         {
-            if(table.table_Status == EMPTY)
+            if(Database_Table[i].table_Status == EMPTY)
             {
                 status_Table = 1;
-                table.table_Status = FULL;
+                Database_Table[i].table_Status = FULL;
                 break;
             }
             else 
@@ -361,19 +363,20 @@ void Staff::order_Beverage ()
     
     if(status_Table ==1 )
     {
-        uint8_t key;
+        int16_t key;
         do
         {
-            uint8_t key;
             uint8_t status_Id = 0;
             int16_t quantity;
             Order_Beverage order_Beverage;
             INPUT_SEARCH_TYPE("entering beverage id: ", id);
             for(Beverage drink : Database_Beverage)
             {
+                cout<< drink.getBeverageName() << endl;
+                cout << drink.getId() << endl;
                 if(drink.getId() == id)
                 {
-                    status_Id == 1;
+                    status_Id = 1;
                     INPUT_TYPE("entering quantity: ",quantity, quantity < 1, "erorr quantity\n");
                     order_Beverage.quantity = quantity;
                     order_Beverage.beverage = drink;
@@ -427,12 +430,12 @@ void Staff::list_order()
 }
 int main()
 {
-//    Beverage douong1("c2",1000), douong2("c3",574);
-//    vector <Beverage> douong;
-//    douong.push_back(douong1);
-//    douong.push_back(douong2);
-//    Staff staff(douong,10);
-//    staff.order_Beverage();
-//    staff.list_order();
+   Beverage douong1("c2",1000), douong2("c3",574);
+   vector <Beverage> douong;
+   douong.push_back(douong1);
+   douong.push_back(douong2);
+   Staff staff(douong,10);
+   staff.order_Beverage();
+   staff.list_order();
 
 }
