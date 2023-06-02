@@ -308,14 +308,16 @@ class Staff
     private:
     vector <Table> Database_Table;
     vector <Beverage> Database_Beverage;
-    public:
-    Staff( vector <Beverage> database_beverage, int16_t table_Quantity);
     void order_Beverage ();
     void fix_Order_beverage();
     void erase_Beverage();
     void Pay_Beverage();
     void list_order();
     void list_Beverage();
+
+    public:
+    Staff( vector <Beverage> database_beverage, int16_t table_Quantity);
+    
     
 };
 
@@ -325,6 +327,7 @@ Staff::Staff( vector <Beverage> database_beverage, int16_t table_Quantity)
     {
         this->Database_Beverage.push_back(drink);
     }
+
     for(uint8_t i=1 ; i <= table_Quantity; i++)
     {
         Table table;
@@ -332,6 +335,32 @@ Staff::Staff( vector <Beverage> database_beverage, int16_t table_Quantity)
         table.table_Status = EMPTY;
         Database_Table.push_back(table);
     }
+    int16_t key;
+    do
+    {
+        do
+        {
+            cout <<"1. goi mon"<< endl;
+            cout <<"2. danh sach goi mon"<<endl;
+            cout <<"0. thoat"<<endl;
+            cout <<"vui long chon chuc nang" <<endl;
+        }
+        while(key <0 || key >2 );
+        switch (key)
+        {
+            case 1:
+            {
+                this->order_Beverage();
+                break;
+            }
+            case 2:
+            {
+                this->list_order();
+                break;
+            }
+        }
+    }
+    while(key !=0 );
 }
 
 void Staff::order_Beverage ()
@@ -340,7 +369,7 @@ void Staff::order_Beverage ()
     int16_t number_Table;
     int16_t id;
     int i;
-    cout<<" ********order beverage**************\n";
+    cout<<"\n ********order beverage**************\n";
     INPUT_SEARCH_TYPE("entering number table:", number_Table);
     for(i=0 ;i<Database_Table.size(); i++)
     {
@@ -404,6 +433,7 @@ void Staff::list_order()
 {
     int16_t number_table;
     uint8_t status = 0;
+    cout<<"\n*********danh sach order nuoc ngot***********" << endl;
     INPUT_SEARCH_TYPE("nhap so ban: ",number_table);
     for(Table table : Database_Table)
     {
@@ -419,23 +449,23 @@ void Staff::list_order()
                 cout <<"id \t ten \t gia \t so luong\n";
                 for(Order_Beverage order : table.DataBase_Order_Beverage)
                 {
-                    cout << order.beverage.getId()<< "\t" <<order.beverage.getBeverageName()<< "\t" << order.beverage.getPrice()<<"\t" << order.quantity ;
+                    cout << order.beverage.getId()<< "\t" <<order.beverage.getBeverageName()<< "\t" << order.beverage.getPrice()<<"\t" << order.quantity << endl;
                 }
             }
             break;
             
         }
     }
-    if(status == 0) cout << "khong tim thay ban";
+    if(status == 0) cout << "khong tim thay ban" << endl;
 }
 int main()
 {
-   Beverage douong1("c2",1000), douong2("c3",574);
-   vector <Beverage> douong;
-   douong.push_back(douong1);
-   douong.push_back(douong2);
-   Staff staff(douong,10);
-   staff.order_Beverage();
-   staff.list_order();
+//    Beverage douong1("c2",1000), douong2("c3",574);
+//    vector <Beverage> douong;
+//    douong.push_back(douong1);
+//    douong.push_back(douong2);
+//    Staff staff(douong,10);
+//    staff.order_Beverage();
+//    staff.list_order();
 
 }
