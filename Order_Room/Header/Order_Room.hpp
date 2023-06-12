@@ -1,5 +1,5 @@
-#ifndef __HOLTEL_MANAGER_HPP
-#define __HOLTEL_MANAGER_HPP
+#ifndef __ORDER_ROOM_HPP
+#define __ORDER_ROOM_HPP
 
 #include<stdio.h>
 #include<string>
@@ -40,7 +40,7 @@ class ManageRoom
 {
     private:
     vector<Room> Database_Room;
-    
+    void show_Status_Room();
     void show_Available_Room();
     void book_Room(int16_t number_Room);
     void check_In(int16_t number_Room);

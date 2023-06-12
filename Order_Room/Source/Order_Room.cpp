@@ -1,4 +1,4 @@
-#include<Hotel_Manager.hpp>
+#include<Order_Room.hpp>
 
 Room::Room(int16_t number_Room)
 {
@@ -69,21 +69,21 @@ ManageRoom::ManageRoom()
         {
             case 1:
             {
-                this->show_Available_Room();
+                this->show_Status_Room();
                 INPUT_TYPE("nhap so phong: ",number_Room, NO_CHECK, NO_SHOW);
                 this->book_Room(number_Room);
                 break;
             }
             case 2:
             {
-                this->show_Available_Room();
+                this->show_Status_Room();
                 INPUT_TYPE("nhap so phong: ",number_Room, NO_CHECK, NO_SHOW);
                 this->check_In(number_Room);
                 break;
             }
             case 3:
             {
-                this->show_Available_Room();
+                this->show_Status_Room();
                 INPUT_TYPE("nhap so phong: ",number_Room, NO_CHECK, NO_SHOW);
                 this->check_Out(number_Room);
                 break;
@@ -135,6 +135,19 @@ void ManageRoom::show_Available_Room()
         cout<< room.getNumber_Room()<<"\t\t" << s_Is_Booked << "\t"<<s_Is_Clean << "\t\t"<<s_Is_Available<< endl;
     }
 }
+
+void ManageRoom::show_Status_Room()
+{
+    for(Room room : Database_Room)
+    {
+        cout << "|" << room.getNumber_Room();
+        if(room.get_Is_booked() == true ) cout<<": day |";
+        else cout <<": trong|";
+        if(room.isAvailable()== true) cout <<" sang sang";
+        else cout <<" chua san";
+    }
+}
+
 void ManageRoom::book_Room(int16_t number_Room)
 {
     uint8_t status = 0;
@@ -142,8 +155,16 @@ void ManageRoom::book_Room(int16_t number_Room)
     {
         if(Database_Room[i].getNumber_Room() == number_Room) 
         {
+            if(Database_Room[i].get_Is_booked() != false)
+            {
+                Database_Room[i].book_Room();
+                break;
+            }
+            else
+            {
+                cout <<"phong da dat" << endl;
+            }
             status = 1;
-            Database_Room[i].book_Room();
             break;
         }
     }
@@ -157,9 +178,13 @@ void ManageRoom::check_In(int16_t number_Room)
     {
         if(Database_Room[i].getNumber_Room() == number_Room) 
         {
+            if(Database_Room[i].isAvailable() == true)
+            {
+                Database_Room[i].check_In();
+                cout <<"da check in"<<endl;
+            }
+            else cout<<"phong chua san sang" <<endl;
             status = 1;
-            Database_Room[i].check_In();
-            cout <<"da check in"<<endl;
             break;
         }
     }
@@ -174,9 +199,13 @@ void ManageRoom::check_Out(int16_t number_Room)
     {
         if(Database_Room[i].getNumber_Room() == number_Room) 
         {
+            if(Database_Room[i].get_Is_booked() == true)
+            {
+                Database_Room[i].check_Out();
+                cout <<"da check out"<<endl;
+            }
+            else cout <<"phong chua check in" << endl;
             status = 1;
-            Database_Room[i].check_Out();
-            cout <<"da check out"<<endl;
             break;
         }
     }
