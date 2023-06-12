@@ -21,7 +21,7 @@ typedef struct
 {
     uint8_t day;
     uint8_t month;
-    uint8_t year;
+    uint16_t year;
 }Type_Date;
 
 typedef struct 
@@ -34,7 +34,7 @@ typedef struct
 typedef enum
 {
     IN ,
-    ON 
+    OUT 
 }Type_Status;
 
 typedef struct
@@ -148,11 +148,12 @@ CustomManger::CustomManger()
             cout <<"2. hien thi danh sach" << endl;
             cout <<"3. xoa khach hang" << endl;
             cout <<"4. check loi vao" << endl;
+            cout <<"5. hien thi lich su vao ra khach hang" << endl;
             cout <<"0. thoat" << endl;
             cout <<"vui long nhap chuc nang" << endl;
             cin >> key;
         }
-        while(key < 0 && key >4);
+        while(key < 0 && key >5);
         if(key == 0) break;
         switch(key)
         {
@@ -176,7 +177,20 @@ CustomManger::CustomManger()
                 this->checkEntry();
                 break;
             }
-            
+            case 5:
+            {
+                int16_t id_Room;
+                INPUT_TYPE("nhap id phong: ",id_Room ,NO_CHECK, NO_SHOW);
+                for (int i = 0; i < Customer_List.size(); i++)
+                {
+                    if(id_Room == Customer_List[i].get_Id_Room())
+                    {
+                        this->show_booking_history(Customer_List[i].get_Hitory_Detail());
+                        break;
+                    }
+                }
+                   
+            }
         }
     }
 }
@@ -221,17 +235,17 @@ void CustomManger::checkEntry()
     history.time.hour = timeCurrent->tm_hour;
     history.date.day = timeCurrent->tm_mday;
     history.date.month = timeCurrent->tm_mon;
-    history.date.year = timeCurrent->tm_year +1900;
+    history.date.year = timeCurrent->tm_year + 1900;
     INPUT_TYPE("nhap so phong: ",id_Room, NO_CHECK, NO_SHOW);
     for(int i=0; i < Customer_List.size(); i++ )
     {
         if(Customer_List[i].get_Id_Room() == id_Room )
         {
-            if(Customer_List[i].get_Hitory_Detail().empty()) history.status = IN;
+            if(Customer_List[i].get_Hitory_Detail().empty()== true) history.status = IN;
             else
             {
-                if(Customer_List[i].get_Hitory_Detail().back().status == IN) history.status = IN;
-                else history.status = ON;
+                if(Customer_List[i].get_Hitory_Detail().back().status == IN) history.status = OUT;
+                else history.status = IN;
             }
 
             Customer_List[i].add_Hitory_Detail(history);
@@ -273,7 +287,7 @@ void CustomManger::show_booking_history(vector <booking_History> detai_History)
     for(booking_History history: detai_History)
     {
         if(history.status == IN) s_Status = "IN";
-        else s_Status = "ON";
+        else s_Status = "OUT";
         //cout << s_Status << history.time.hour<<":"<<history.time.minute<<":"<<history.time.second<<"\t "<<history.date.day<<"/" <<history.date.month <<"/" <<history.date.year<< endl;
         printf("%s\t %d :%d: %d \t %d/%d/%d\n",s_Status.c_str(), history.time.hour, history.time.minute, history.time.second, history.date.day, history.date.month, history.date.year);
     }
